@@ -7,14 +7,12 @@ on:
       - "src/**"
       - "Dockerfile"
       - "docker-compose.yml"
-      - "scripts/**"
   pull_request:
     branches: [ main ]
     paths:
       - "src/**"
       - "Dockerfile"
       - "docker-compose.yml"
-      - "scripts/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}

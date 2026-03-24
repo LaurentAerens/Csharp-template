@@ -20,8 +20,6 @@ A short, one-paragraph description of what this project does and the problem it 
 .
 ├── Dockerfile                      # Container build definition
 ├── docker-compose.yml              # Local development compose file
-├── scripts/
-│   └── start.sh                    # Container entrypoint / startup script
 ├── docs/                           # Extended documentation
 └── src/
     ├── MyProject.slnx              # Solution file
