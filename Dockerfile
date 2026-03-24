@@ -19,12 +19,12 @@ RUN dotnet publish MyProject/MyProject.csproj \
     --output /app/publish
 
 # Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine AS runtime
 WORKDIR /app
 
 # Create non-root user
-RUN groupadd --system --gid 1001 appgroup \
-    && useradd --system --uid 1001 --gid appgroup appuser
+RUN addgroup --system --gid 1001 appgroup \
+    && adduser --system --uid 1001 --ingroup appgroup appuser
 
 COPY --from=build /app/publish .
 
