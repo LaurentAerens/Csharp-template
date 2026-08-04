@@ -113,15 +113,6 @@ jobs:
             echo "COVERAGE_PERCENT=0" >> $GITHUB_OUTPUT
           fi
 
-      - name: Upload Coverage Reports to Codecov (Optional)
-        if: ${{ inputs.run_tests }}
-        uses: codecov/codecov-action@v7
-        with:
-          files: ./coverage/**/coverage.cobertura.xml
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload Coverage Report to GitHub Pages
         if: ${{ inputs.run_tests && inputs.is_pull_request }}
