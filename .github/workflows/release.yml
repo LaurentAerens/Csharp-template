@@ -40,6 +40,7 @@ jobs:
   validate-and-release:
     name: Validate & Release
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     needs: [build-and-test]
     if: needs.build-and-test.result == 'success'
 
@@ -181,14 +182,14 @@ jobs:
 
       - name: Release Summary
         run: |
-          echo "## ✅ Release Complete"
-          echo ""
-          echo "**Version:** \`$DOCKER_TAG\`"
-          echo "**Type:** \`$RELEASE_TYPE\`"
-          echo "**Git Tag:** \`$GIT_TAG\`"
-          echo ""
+          echo "## ✅ Release Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** \`$DOCKER_TAG\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Type:** \`$RELEASE_TYPE\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Git Tag:** \`$GIT_TAG\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
           if [[ "$CREATE_RELEASE" == "true" ]]; then
-            echo "📦 GitHub Release created: [$GIT_TAG]($SERVER_URL/$REPOSITORY/releases/tag/$GIT_TAG)"
+            echo "📦 GitHub Release created: [$GIT_TAG]($SERVER_URL/$REPOSITORY/releases/tag/$GIT_TAG)" >> $GITHUB_STEP_SUMMARY
           fi
         env:
           DOCKER_TAG: ${{ env.DOCKER_TAG }}

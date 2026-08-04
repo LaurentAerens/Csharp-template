@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage">
+        <Configuration>
+          <!-- Format of the coverage report -->
+          <Format>cobertura</Format>
+          
+          <!-- Exclude specific assemblies or namespaces from coverage -->
+          <Exclude>
+            <!-- Test projects -->
+            [*Tests]*
+            [*Tests.*]*
+            
+            <!-- Console / local dev projects if applicable -->
+            [*Console]*
+            
+            <!-- Generated code -->
+            [*]*Migrations.*
+          </Exclude>
+          
+          <!-- Exclude by file patterns -->
+          <ExcludeByFile>**/Migrations/**,**/Program.cs</ExcludeByFile>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

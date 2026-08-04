@@ -10,6 +10,7 @@ on:
     branches: [ main ]
     paths:
       - "src/**/*.csproj"
+      - ".github/workflows/dependency-scanning.yml"
   schedule:
     # Run daily at 2 AM UTC to catch new vulnerabilities
     - cron: '0 2 * * *'
@@ -17,10 +18,15 @@ on:
 env:
   DOTNET_VERSION: '10.0.x'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   nuget-audit:
     name: NuGet Vulnerability Audit
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
       security-events: write
@@ -32,6 +38,8 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+          cache: true
+          cache-dependency-path: 'src/**/*.csproj'
 
       - name: Restore Dependencies
         run: dotnet restore src/MyProject.slnx
@@ -52,7 +60,7 @@ jobs:
 
       - name: Upload NuGet Audit Results
         if: always() && hashFiles('audit-results.json') != ''
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: nuget-audit-results
           path: audit-results.json
@@ -98,8 +106,7 @@ jobs:
     steps:
       - name: Summary
         run: |
-          echo "## Dependency Scanning Complete"
-          echo "✓ NuGet Package Vulnerability Audit"
-          echo "✓ Dependabot Automated PRs (when enabled in repo settings)"
-          echo ""
-          echo "**Note:** Enable Dependabot in repository settings > Code security and analysis"
+          echo "## 📦 Dependency Scanning Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✓ NuGet Package Vulnerability Audit" >> $GITHUB_STEP_SUMMARY
+          echo "✓ Dependabot Automated PRs (configured in dependabot.yml)" >> $GITHUB_STEP_SUMMARY

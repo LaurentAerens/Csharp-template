@@ -4,14 +4,21 @@ on:
   push:
     branches: [ main ]
     paths:
+      - "src/**"
       - "Dockerfile"
       - "docker-compose.yml"
       - ".github/workflows/container-security.yml"
   pull_request:
     branches: [ main ]
     paths:
+      - "src/**"
       - "Dockerfile"
       - "docker-compose.yml"
+      - ".github/workflows/container-security.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -21,12 +28,13 @@ jobs:
   hadolint:
     name: Dockerfile Lint
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v7
 
       - name: Run hadolint
-        uses: hadolint/hadolint-action@v3.4.0
+        uses: hadolint/hadolint-action@v3.3.0
         with:
           dockerfile: Dockerfile
           failure-threshold: warning
@@ -45,6 +53,7 @@ jobs:
   trivy-image:
     name: Trivy Image Scan
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v7
@@ -71,6 +80,7 @@ jobs:
   trivy-dockerfile:
     name: Trivy Dockerfile Scan
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v7
@@ -101,16 +111,16 @@ jobs:
     steps:
       - name: Generate Summary
         run: |
-          echo "## Container Security Scan Results"
-          echo "✓ hadolint: Dockerfile best practices check"
-          echo "✓ Trivy Image: Container image vulnerability scan"
-          echo "✓ Trivy Config: Dockerfile misconfiguration scan"
-          echo ""
-          echo "**Note:** All results uploaded to GitHub Security Tab"
+          echo "## 🛡️ Container Security Scan Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✓ **hadolint**: Dockerfile best practices check" >> $GITHUB_STEP_SUMMARY
+          echo "✓ **Trivy Image**: Container image vulnerability scan" >> $GITHUB_STEP_SUMMARY
+          echo "✓ **Trivy Config**: Dockerfile misconfiguration scan" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Note:** Detailed security events are uploaded to the GitHub Security tab." >> $GITHUB_STEP_SUMMARY
 
       - name: Fail if Critical Vulnerabilities Found
         if: failure()
         run: |
           echo "⚠️ Critical or High severity vulnerabilities detected!"
-          echo "Please review and address them before merging."
           exit 1
