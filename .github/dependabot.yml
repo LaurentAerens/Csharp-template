@@ -44,3 +44,7 @@ updates:
     pull-request-branch-name:
       separator: "/"
     rebase-strategy: "auto"
+    groups:
+      codeql-actions:
+        patterns:
+          - "github/codeql-action/*"

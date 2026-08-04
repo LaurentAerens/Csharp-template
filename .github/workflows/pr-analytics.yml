@@ -5,6 +5,10 @@ on:
     branches: [ main ]
     types: [opened, synchronize, reopened, ready_for_review]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   pull-requests: write
@@ -13,6 +17,7 @@ jobs:
   pr-size-analysis:
     name: PR Size Analysis
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v7
@@ -101,12 +106,32 @@ jobs:
               ? '⚠️ **Large PR Detected** - Consider breaking into smaller PRs for easier review.'
               : '✅ Good PR size for review';
 
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
+            // Find existing PR Size Analysis comment to upsert
+            const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: comment
+              issue_number: context.issue.number,
             });
+
+            const existingComment = comments.data.find(c => 
+              c.body.includes('PR Size Analysis') && c.user.type === 'Bot'
+            );
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
 
   pr-draft-check:
     name: Draft PR Auto-Check
@@ -135,5 +160,5 @@ jobs:
     steps:
       - name: Summary
         run: |
-          echo "## PR Analysis Complete"
-          echo "✓ Size analysis and labeling"
+          echo "## 📊 PR Analysis Complete" >> $GITHUB_STEP_SUMMARY
+          echo "✓ Size analysis and labeling" >> $GITHUB_STEP_SUMMARY

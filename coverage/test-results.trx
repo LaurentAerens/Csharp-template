@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="db19b007-c9c8-48ba-90c2-0f64317c990a" name="laerens@CDT-BZ18JS3 2026-08-04 15:35:50" runUser="CODIT\laerens" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-04T15:35:50.8457042+02:00" queuing="2026-08-04T15:35:50.8457046+02:00" start="2026-08-04T15:35:48.3655456+02:00" finish="2026-08-04T15:35:50.8499533+02:00" />
+  <TestSettings name="default" id="7dc41fec-8ace-48d8-938c-64ee7a2245bf">
+    <Deployment runDeploymentRoot="laerens_CDT-BZ18JS3_2026-08-04_15_35_50" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="2c89720e-970b-48b3-9bbc-3f5551dce5f7" testId="6e6bc726-9b90-938d-f92c-3dfdf9c18fe5" testName="MyProject.Tests.ExampleServiceTests.Greet_ReturnsExpectedMessage" computerName="CDT-BZ18JS3" duration="00:00:00.2020514" startTime="2026-08-04T15:35:50.1739404+02:00" endTime="2026-08-04T15:35:50.3692763+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2c89720e-970b-48b3-9bbc-3f5551dce5f7" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="MyProject.Tests.ExampleServiceTests.Greet_ReturnsExpectedMessage" storage="c:\users\laerens\source\repos\personal\csharp-template\src\myproject.tests\bin\release\net10.0\myproject.tests.dll" id="6e6bc726-9b90-938d-f92c-3dfdf9c18fe5">
+      <Execution id="2c89720e-970b-48b3-9bbc-3f5551dce5f7" />
+      <TestMethod codeBase="C:\Users\laerens\source\repos\Personal\Csharp-template\src\MyProject.Tests\bin\Release\net10.0\MyProject.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="MyProject.Tests.ExampleServiceTests" name="Greet_ReturnsExpectedMessage" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="6e6bc726-9b90-938d-f92c-3dfdf9c18fe5" executionId="2c89720e-970b-48b3-9bbc-3f5551dce5f7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.10)&#xD;
+[xUnit.net 00:00:00.42]   Discovering: MyProject.Tests&#xD;
+[xUnit.net 00:00:00.45]   Discovered:  MyProject.Tests&#xD;
+[xUnit.net 00:00:00.46]   Starting:    MyProject.Tests&#xD;
+[xUnit.net 00:00:00.70]   Finished:    MyProject.Tests&#xD;
+</StdOut>
+    </Output>
+    <CollectorDataEntries>
+      <Collector agentName="CDT-BZ18JS3" uri="datacollector://microsoft/CoverletCodeCoverage/1.0" collectorDisplayName="XPlat code coverage">
+        <UriAttachments>
+          <UriAttachment>
+            <A href="CDT-BZ18JS3\coverage.cobertura.xml"></A>
+          </UriAttachment>
+        </UriAttachments>
+      </Collector>
+    </CollectorDataEntries>
+  </ResultSummary>
+</TestRun>

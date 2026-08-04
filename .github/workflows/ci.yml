@@ -7,12 +7,18 @@ on:
       - "src/**"
       - "Dockerfile"
       - "docker-compose.yml"
+      - "coverlet.runsettings"
+      - ".github/workflows/ci.yml"
+      - ".github/workflows/build-test-template.yml"
   pull_request:
     branches: [ main ]
     paths:
       - "src/**"
       - "Dockerfile"
       - "docker-compose.yml"
+      - "coverlet.runsettings"
+      - ".github/workflows/ci.yml"
+      - ".github/workflows/build-test-template.yml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -22,6 +28,9 @@ permissions:
   contents: read
   checks: write
   pull-requests: write
+  packages: read
+  pages: write
+  id-token: write
 
 jobs:
   build-and-test:
@@ -31,6 +40,8 @@ jobs:
       project_name: MyProject
       project_path: src/MyProject.slnx
       run_tests: true
+      is_pull_request: ${{ github.event_name == 'pull_request' }}
+      pr_number: ${{ github.event.pull_request.number || '' }}
 
   quality-gates:
     name: Quality Gates Summary
@@ -46,8 +57,8 @@ jobs:
           echo "## Build & Tests Status"
           echo "Build and tests: ${{ needs.build-and-test.result }}"
 
-          if [[ "${{ needs.build-and-test.result }}" == "failure" ]]; then
-            echo "❌ Build or tests failed"
+          if [[ "${{ needs.build-and-test.result }}" != "success" ]]; then
+            echo "❌ Build or tests did not succeed"
             exit 1
           fi
 
